@@ -1,0 +1,50 @@
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index a3e3c8f3d..b3b19fee1 100644
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -726,6 +726,7 @@ asmlinkage long sys_settimeofday(struct __kernel_old_timeval __user *tv,
+ asmlinkage long sys_adjtimex(struct __kernel_timex __user *txc_p);
+ asmlinkage long sys_adjtimex_time32(struct old_timex32 __user *txc_p);
+ asmlinkage long sys_getpid(void);
++asmlinkage long sys_tces420_hello(void);
+ asmlinkage long sys_getppid(void);
+ asmlinkage long sys_getuid(void);
+ asmlinkage long sys_geteuid(void);
+diff --git a/kernel/sys.c b/kernel/sys.c
+index c8376d7a0..f77356154 100644
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -1001,6 +1001,12 @@ SYSCALL_DEFINE0(getpid)
+ 	return task_tgid_vnr(current);
+ }
+ 
++SYSCALL_DEFINE0(tces420_hello) {
++	printk(KERN_INFO "TCES420: Hello from Riley Hopper\n");
++	return 0;
++
++}
++
+ /* Thread ID - the internal kernel "pid" */
+ SYSCALL_DEFINE0(gettid)
+ {
+diff --git a/kernel/sys_ni.c b/kernel/sys_ni.c
+index bf5d05c63..dcb5a13e9 100644
+--- a/kernel/sys_ni.c
++++ b/kernel/sys_ni.c
+@@ -351,6 +351,7 @@ COND_SYSCALL(ppoll_time32);
+ COND_SYSCALL_COMPAT(ppoll_time32);
+ COND_SYSCALL(utimensat_time32);
+ COND_SYSCALL(clock_adjtime32);
++COND_SYSCALL(tces420_hello);
+ 
+ /*
+  * The syscalls below are not found in include/uapi/asm-generic/unistd.h
+diff --git a/scripts/syscall.tbl b/scripts/syscall.tbl
+index d1ae5e92c..3cecffa03 100644
+--- a/scripts/syscall.tbl
++++ b/scripts/syscall.tbl
+@@ -410,3 +410,4 @@
+ 467	common	open_tree_attr			sys_open_tree_attr
+ 468	common	file_getattr			sys_file_getattr
+ 469	common	file_setattr			sys_file_setattr
++470	common	tces420_hello			sys_tces420_hello

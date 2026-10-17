@@ -1,0 +1,1 @@
+Linux Hopper 6.18.56-v8-16ktces420+ #2 SMP PREEMPT Fri Oct 16 14:50:10 UTC 2026 aarch64 GNU/Linux
